@@ -90,7 +90,27 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       active: window._settings.get_boolean('debug-logging'),
       valign: Gtk.Align.CENTER
     });
-
+    
+    const normalOrientationSwitch = new Gtk.Switch({
+      active: window._settings.get_boolean('allow-normal-orientation'),
+      valign: Gtk.Align.CENTER,
+    });
+    
+    const leftUpOrientationSwitch = new Gtk.Switch({
+      active: window._settings.get_boolean('allow-left-up-orientation'),
+      valign: Gtk.Align.CENTER,
+    });
+    
+    const bottomUpOrientationSwitch = new Gtk.Switch({
+      active: window._settings.get_boolean('allow-bottom-up-orientation'),
+      valign: Gtk.Align.CENTER,
+    });
+    
+    const rightUpOrientationSwitch = new Gtk.Switch({
+      active: window._settings.get_boolean('allow-right-up-orientation'),
+      valign: Gtk.Align.CENTER,
+    });
+    
     window._settings.bind('invert-horizontal-rotation-direction',
       invertHorizontalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
@@ -105,6 +125,18 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     window._settings.bind('debug-logging',
       toggleLoggingSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+    
+    window._settings.bind('allow-normal-orientation',
+      normalOrientationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    window._settings.bind('allow-left-up-orientation',
+      leftUpOrientationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    window._settings.bind('allow-bottom-up-orientation',
+      bottomUpOrientationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    window._settings.bind('allow-right-up-orientation',
+      rightUpOrientationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
     invertHorizontalRow.add_suffix(invertHorizontalRotationSwitch);
     invertHorizontalRow.activatable_widget = invertHorizontalRotationSwitch;
