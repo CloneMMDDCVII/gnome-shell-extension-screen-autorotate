@@ -20,6 +20,13 @@ import Gio from 'gi://Gio';
 import * as BusUtils from './busUtils.js';
 const connection = Gio.DBus.session;
 
+let allowedOrientations = {
+  'normal': true,
+  'left-up': true,
+  'bottom-up': true,
+  'right-up': true
+};
+
 export function call_dbus_method(method, params = null, handler) {
   if (handler != undefined || handler != null) {
     connection.call(
@@ -66,10 +73,14 @@ export function rotate_to(transform) {
   this.get_state().then(state => {
     let builtin_monitor = state.builtin_monitor;
     let logical_monitor = state.get_logical_monitor_for(builtin_monitor.connector);
-    logical_monitor.transform = transform;
-    let variant = state.pack_to_apply(BusUtils.Methods['temporary']);
-    call_dbus_method('ApplyMonitorsConfig', variant);
+
+    // Check if the orientation is allowed
+    if (allowedOrientations[transform]) {
+      logical_monitor.transform = transform;
+      let variant = state.pack_to_apply(BusUtils.Methods['temporary']);
+      call_dbus_method('ApplyMonitorsConfig', variant);
+    }
   }).catch(err => {
     console.error(err);
-  })
+  });
 }
