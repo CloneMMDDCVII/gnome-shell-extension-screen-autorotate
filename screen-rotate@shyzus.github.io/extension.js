@@ -107,6 +107,13 @@ class ScreenAutorotate {
 
     let locked = this._orientation_settings.get_boolean(ORIENTATION_LOCK_KEY);
     if (!locked) this.enable();
+  
+    this.allowNormal = this._settings.get_boolean('allow-normal-orientation');
+    this.allowLeftUp = this._settings.get_boolean('allow-left-up-orientation');
+    this.allowBottomUp = this._settings.get_boolean('allow-bottom-up-orientation');
+    this.allowRightUp = this._settings.get_boolean('allow-right-up-orientation');
+ 
+  
   }
 
   _override_system_actions() {
@@ -199,7 +206,12 @@ class ScreenAutorotate {
       console.debug(`offset=${offset}`);
       console.debug(`target=${target}`);
     }
-    Rotator.rotate_to(target);
+      Rotator.rotate_to(target, {
+    'normal': this.allowNormal,
+    'left-up': this.allowLeftUp,
+    'bottom-up': this.allowBottomUp,
+    'right-up': this.allowRightUp
+  });
   }
 }
 
